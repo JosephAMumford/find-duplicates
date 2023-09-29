@@ -12,6 +12,9 @@ pub fn main() !void {
 
     const number_of_files: usize = try file.readDirectory(input);
     std.log.info("Number of files: {}", .{number_of_files});
+
+    //Create directory to store results
+    try file.makeDirectory("../results");
 }
 
 pub fn nextLine(reader: anytype, buffer: []u8) !?[]const u8 {

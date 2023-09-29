@@ -21,11 +21,24 @@ pub fn readDirectory(directory: []const u8) anyerror!usize {
     }
 
     var file_count: usize = 0;
+    var dir_count: usize = 0;
     var iter = iter_dir.iterate();
 
     while (try iter.next()) |entry| {
         if (entry.kind == .file) file_count += 1;
+        if (entry.kind == .directory) {
+            dir_count += 1;
+            std.log.info("{s}", .{entry.name});
+        }
     }
 
+    std.log.info("Sub-directory count: {}", .{dir_count});
+
     return file_count;
+}
+
+pub fn makeDirectory(directory: []const u8) anyerror!void {
+    std.log.info("Creating directory: {s}", .{directory});
+
+    try std.fs.cwd().makePath(directory);
 }

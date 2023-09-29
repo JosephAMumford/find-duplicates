@@ -1,5 +1,6 @@
 const std = @import("std");
 const file = @import("file.zig");
+const DirectoryStats = file.DirectoryStats;
 
 pub fn main() !void {
     const stdin = std.io.getStdIn();
@@ -10,8 +11,10 @@ pub fn main() !void {
     var buffer: [100]u8 = undefined;
     const input: []const u8 = (try nextLine(stdin.reader(), &buffer)).?;
 
-    const number_of_files: usize = try file.readDirectory(input);
-    std.log.info("Number of files: {}", .{number_of_files});
+    const scanned_directory: DirectoryStats = try file.readDirectory(input);
+
+    std.log.info("File count: {}", .{scanned_directory.file_count});
+    std.log.info("Sub-directory count: {}", .{scanned_directory.directory_count});
 
     //Create directory to store results
     try file.makeDirectory("../results");

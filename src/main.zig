@@ -11,6 +11,7 @@ pub fn main() !void {
     var buffer: [100]u8 = undefined;
     const input: []const u8 = (try nextLine(stdin.reader(), &buffer)).?;
 
+    //Get initial directory
     const scanned_directory: DirectoryStats = try file.readDirectory(input);
 
     std.log.info("File count: {}", .{scanned_directory.file_count});

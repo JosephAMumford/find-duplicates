@@ -11,14 +11,19 @@ pub fn main() !void {
     var buffer: [100]u8 = undefined;
     const input: []const u8 = (try nextLine(stdin.reader(), &buffer)).?;
 
-    //Get initial directory
-    const scanned_directory: DirectoryStats = try file.readDirectory(input);
-
-    std.log.info("File count: {}", .{scanned_directory.file_count});
-    std.log.info("Sub-directory count: {}", .{scanned_directory.directory_count});
-
     //Create directory to store results
     try file.makeDirectory("../results");
+
+    try file.getFilesAndDirectories(input);
+
+    try file.scanFiles(input);
+
+    for (file.directory_list.items, 0..) |entry, index| {
+        std.log.info("directory: {s}, index: {}", .{ entry, index });
+        try file.scanFiles(entry);
+    }
+
+    try file.createFile("results/duplicates.txt");
 }
 
 pub fn nextLine(reader: anytype, buffer: []u8) !?[]const u8 {

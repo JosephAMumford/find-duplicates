@@ -1,11 +1,11 @@
 const std = @import("std");
 const file = @import("file.zig");
-const DirectoryStats = file.DirectoryStats;
 
 pub fn main() !void {
     const stdin = std.io.getStdIn();
     const stdout = std.io.getStdOut();
 
+    //Get user input
     try stdout.writer().print("Enter directory to scan: ", .{});
 
     var buffer: [100]u8 = undefined;
@@ -14,12 +14,12 @@ pub fn main() !void {
     //Create directory to store results
     try file.makeDirectory("../results");
 
+    //get list of all sub-directories
+    try file.directory_list.append(input);
     try file.getFilesAndDirectories(input);
 
-    try file.scanFiles(input);
-
-    for (file.directory_list.items, 0..) |entry, index| {
-        std.log.info("directory: {s}, index: {}", .{ entry, index });
+    //Scan files to find duplcaites
+    for (file.directory_list.items) |entry| {
         try file.scanFiles(entry);
     }
 

@@ -2,8 +2,6 @@ const std = @import("std");
 const allocator = std.heap.page_allocator;
 const ArrayList = std.ArrayList;
 
-pub const DirectoryStats = struct { file_count: usize = 0, directory_count: usize = 0 };
-
 pub var directory_list = ArrayList([]const u8).init(allocator);
 pub var file_hash_map = std.StringHashMap([]const u8).init(allocator);
 pub var duplicate_files = ArrayList([]const u8).init(allocator);
